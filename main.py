@@ -375,17 +375,17 @@ def auto3(level=1, team=1, skill=3, turn1=6):
                 time.sleep(6)
                 pyautogui.click(951, 840)
                 time.sleep(3.5)
-            #'''
-            b = time.time()
-            n = (b-a)//120
-            a = b-(b-a) % 120
+            '''
+            b=time.time()
+            n=(b-a)//120
+            a=b-(b-a)%120
           #  print(a,b)
-            m = 0
-            while m < n:
+            m=0
+            while m<n:
                 pyautogui.click(1845, 491)
                 time.sleep(1)
-                m = m+1
-            #'''
+                m=m+1
+            '''
             if pyautogui.pixelMatchesColor(1047, 217, (189, 89, 132), tolerance=15):
                 flag = 0
             flag1 = True

@@ -16,11 +16,16 @@ turn = 7
 level_ = 1  # 关数
 team_ = 4  # 队伍位置
 skill_ = 2  # 技能
-dir = 0  # 是否指向性
-turn_ = 8  # 最大回合
+dir = 1  # 是否指向性
+turn_ = 12  # 最大回合
 
 #选择模式,1为刷2-4， 2为无色差模式， 3为单刷模式
 mode = 3
+
+
+class battleerror(RuntimeError):
+    def __init__(self, arg):
+        self.args = arg
 
 
 def auto1():
@@ -175,7 +180,9 @@ def prepare(s, s1):
 
 def battle(t1, s):
     t = 0
-   # print(pyautogui.pixel(1448,503))
+    if pyautogui.pixelMatchesColor(1363, 129, (194, 172, 140), tolerance=8):
+        raise battleerror("not_begin")
+    print(pyautogui.pixel(1448, 503))
     while (t < t1 and (not pyautogui.pixelMatchesColor(1448, 503, (70, 71, 140), tolerance=8))
            and (not pyautogui.pixelMatchesColor(1448, 503, (66, 90, 66), tolerance=8))
            and (not pyautogui.pixelMatchesColor(1448, 503, (114, 50, 28), tolerance=8))):
@@ -208,33 +215,36 @@ def battle(t1, s):
         time.sleep(0.5)
         pyautogui.click(1468, 517)
         l = 0
-        while l < 7:
+        while l < 6:
             pyautogui.click(557, 447)
             time.sleep(0.5)
             l = l+1
-        #print(pyautogui.pixel(1448,503),pyautogui.pixel(1229, 763),"a1")
+        print(pyautogui.pixel(1448, 503), pyautogui.pixel(1248, 685), "a1")
         if pyautogui.pixelMatchesColor(1448, 503, (70, 71, 140), tolerance=8) \
                 or pyautogui.pixelMatchesColor(1448, 503, (66, 90, 66), tolerance=8) \
                 or pyautogui.pixelMatchesColor(1448, 503, (114, 50, 28), tolerance=8) \
-                or pyautogui.pixelMatchesColor(1229, 763, (50, 50, 70), tolerance=20):
+                or pyautogui.pixelMatchesColor(1248, 685, (255, 192, 66), tolerance=15):
             break
         l = 0
-        while l < 12:
+        while l < 16:
             pyautogui.click(557, 447)
             time.sleep(0.5)
             l = l+1
         # print("f")
         t = t + 1
-       # print(pyautogui.pixel(1448,503),"b1")
+        print(pyautogui.pixel(1448, 503), "b1")
 
 
 def deploy():
+    time.sleep(3)
+    if pyautogui.pixelMatchesColor(1363, 129, (194, 172, 140), tolerance=8):
+        raise battleerror("not_begin")
     t = 0
     while ((not pyautogui.pixelMatchesColor(1464, 527, (196, 153, 27), tolerance=15)) and t < 15):
         # print(pyautogui.pixel(1448,503))
         time.sleep(3)
         t = t + 1
-       # print(t)
+        print(t)
     time.sleep(1)
     pyautogui.click(1468, 517)
     if not pyautogui.pixelMatchesColor(1448, 503, (70, 71, 140), tolerance=15) and (
@@ -268,13 +278,15 @@ def auto3(level=1, team=1, skill=3, turn1=6):
     time.sleep(3)
     flag = 0
     flag1 = True
-    a = time.time()
+   # a = time.time()
     while (True):
         try:
+            if pyautogui.pixelMatchesColor(447, 330, (132, 126, 120), tolerance=8):
+                battle(turn1, skill)
             #print(flag,flag1)
-            if flag1 and (pyautogui.pixelMatchesColor(1448, 503, (70, 71, 140), tolerance=8)
-                          or pyautogui.pixelMatchesColor(1448, 503, (66, 90, 66), tolerance=8)
-                          or pyautogui.pixelMatchesColor(1448, 503, (114, 50, 28), tolerance=8)):
+            if (not ((not flag1) and flag)) and (pyautogui.pixelMatchesColor(1448, 503, (70, 71, 140), tolerance=8)
+                                                 or pyautogui.pixelMatchesColor(1448, 503, (66, 90, 66), tolerance=8)
+                                                 or pyautogui.pixelMatchesColor(1448, 503, (114, 50, 28), tolerance=8)):
                 choose()
             if pyautogui.pixelMatchesColor(1047, 217, (189, 89, 132), tolerance=15):
                 flag = 0
@@ -292,7 +304,7 @@ def auto3(level=1, team=1, skill=3, turn1=6):
                         flag = 9
                     else:
                         flag = 6
-            #print(flag,"after")
+            print(flag, "after")
             if flag == 0:
                 prepare(level, team)
                 flag = flag+1
@@ -377,18 +389,21 @@ def auto3(level=1, team=1, skill=3, turn1=6):
                 time.sleep(3.5)
             '''
             b=time.time()
-            n=(b-a)//120
-            a=b-(b-a)%120
+            n=(b-a)//600
+            a=b-(b-a)%600
           #  print(a,b)
             m=0
             while m<n:
                 pyautogui.click(1845, 491)
                 time.sleep(1)
                 m=m+1
-            '''
+            #'''
             if pyautogui.pixelMatchesColor(1047, 217, (189, 89, 132), tolerance=15):
                 flag = 0
             flag1 = True
+        except battleerror as e:
+            time.sleep(1)
+            print(e.args)
         except:
             time.sleep(1)
             flag1 = False
@@ -400,7 +415,7 @@ def auto3(level=1, team=1, skill=3, turn1=6):
 time.sleep(5)
 while(True):
     try:
-        print(pyautogui.pixel(856, 384))
+        print(pyautogui.pixel(1248, 685))
         #break
         time.sleep(0.2)
     except:

@@ -22,7 +22,7 @@ pause = 70  # 刷经验用，不刷设成1
 # 选择模式,1为刷2-4， 2为无色差模式， 3为单刷模式
 mode = 3
 # 一些用来干别的的东西
-extra = 0
+extra = 1
 starttime = time.time()
 
 
@@ -301,8 +301,13 @@ def auto3(level=1, team=1, skill=3, turn1=6):
     time.sleep(3)
     flag = 0
     flag1 = True
+    dis = False
     while (True):
         try:
+            if dis:
+                reload()
+                dis = False
+                flag1 = True
             if (not ((not flag1) and flag)) and pyautogui.pixelMatchesColor(447, 330, (132, 126, 120), tolerance=8):
                 battle(turn1, skill)
             # print(flag,flag1)
@@ -447,7 +452,7 @@ def auto3(level=1, team=1, skill=3, turn1=6):
                 print(e.args)
             elif e.args[0] == "d":
                 print(e.args)
-                reload()
+                dis = True
         except:
             time.sleep(1)
             flag1 = False
